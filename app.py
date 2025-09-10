@@ -64,11 +64,12 @@ def init_db_connection():
     """Inicializar conexión a la base de datos MySQL"""
     try:
         connection = mysql.connector.connect(
-            host=st.secrets.get("DB_HOST", "localhost"),
-            user=st.secrets.get("DB_USER", "root"),
-            password=st.secrets.get("DB_PASSWORD", ""),
-            database=st.secrets.get("DB_NAME", "bufete_abogados"),
-            autocommit=True
+            host=st.secrets["DB_HOST"],
+            port=int(st.secrets["DB_PORT"]),
+            user=st.secrets["DB_USER"],
+            password=st.secrets["DB_PASSWORD"],
+            database=st.secrets["DB_NAME"],
+            ssl_mode=st.secrets["DB_SSL_MODE"]
         )
         return connection
     except Exception as e:
