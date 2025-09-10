@@ -69,7 +69,6 @@ def init_db_connection():
             user=st.secrets["DB_USER"],
             password=st.secrets["DB_PASSWORD"],
             database=st.secrets["DB_NAME"],
-            ssl_mode=st.secrets["DB_SSL_MODE"]
         )
         return connection
     except Exception as e:
