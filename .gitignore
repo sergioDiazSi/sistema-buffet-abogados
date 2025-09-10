@@ -1,1 +1,4 @@
 /.venv
+
+# Ignorar secretos
+.streamlit/secrets.toml
