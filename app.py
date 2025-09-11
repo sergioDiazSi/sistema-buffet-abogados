@@ -309,10 +309,11 @@ def show_admin_dashboard():
         col1, col2, col3, col4 = st.columns(4)
         
         # Métricas generales
-        total_casos = execute_query("SELECT COUNT(*) as total FROM casos")[0]['total']
-        total_abogados = execute_query("SELECT COUNT(*) as total FROM abogados")[0]['total']
-        total_clientes = execute_query("SELECT COUNT(*) as total FROM clientes")[0]['total']
-        casos_activos = execute_query("SELECT COUNT(*) as total FROM casos WHERE estado IN ('en_revision', 'en_proceso')")[0]['total']
+        total_casos = (execute_query("SELECT COUNT(*) as total FROM casos") or [{"total":0}])[0]['total'] or 0
+        total_abogados = (execute_query("SELECT COUNT(*) as total FROM abogados") or [{"total":0}])[0]['total'] or 0
+        total_clientes = (execute_query("SELECT COUNT(*) as total FROM clientes") or [{"total":0}])[0]['total'] or 0
+        casos_activos = (execute_query("SELECT COUNT(*) as total FROM casos WHERE estado IN ('en_revision', 'en_proceso')") or [{"total":0}])[0]['total'] or 0
+
         
         with col1:
             st.metric("Total Casos", total_casos)
@@ -908,11 +909,14 @@ def show_reports():
             with col1:
                 st.metric("Total Casos", datos['total_casos'])
             with col2:
-                st.metric("Presupuesto Total", f"S/ {datos['presupuesto_total']:,.2f}")
+                presupuesto_total = datos['presupuesto_total'] or 0
+                st.metric("Presupuesto Total", f"S/ {presupuesto_total:.2f}")
             with col3:
-                st.metric("Presupuesto Promedio", f"S/ {datos['presupuesto_promedio']:,.2f}")
+                presupuesto_promedio = datos['presupuesto_promedio'] or 0
+                st.metric("Presupuesto Promedio", f"S/ {presupuesto_promedio:.2f}")
             with col4:
-                st.metric("Ingresos por Casos Ganados", f"S/ {datos['ingresos_ganados']:,.2f}")
+                ingresos_ganados = datos['ingresos_ganados'] or 0
+                st.metric("Ingresos por Casos Ganados", f"S/ {ingresos_ganados:,.2f}")
             
             # Ingresos por mes (simulado)
             ingresos_mes = execute_query("""
